@@ -3,200 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TimeMate</title>
+  <title>Study Timer with Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      font-family: 'Courier New', Courier, monospace;
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>body {font-family: 'Courier New', Courier, monospace;}</style>
 </head>
-<body class="bg-black text-white flex items-center justify-center min-h-screen relative">
-  <!-- Real-Time Clock -->
-  <div id="realTime" class="absolute top-4 right-4 text-xs md:text-sm font-mono opacity-70"></div>
-
-  <div class="text-center space-y-8 px-4">
-    <!-- Title -->
-    <h1 class="text-2xl md:text-3xl font-bold">TimeMate</h1>
-
-    <!-- Timer Display -->
-    <div id="timerDisplay" class="text-6xl md:text-8xl font-bold tabular-nums">00:00:00</div>
-
-    <!-- Buttons -->
-    <div class="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row justify-center">
-      <button id="startBtn" class="px-4 md:px-6 py-2 md:py-3 bg-green-600 hover:bg-green-500 text-white font-bold text-lg md:text-xl rounded">
-        Start
-      </button>
-      <button id="setTimeBtn" class="px-4 md:px-6 py-2 md:py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-lg md:text-xl rounded">
-        Set Time
-      </button>
-
+<body class="bg-black text-white flex flex-col items-center justify-center h-screen relative">
+  <button id="dashboardBtn" class="absolute top-4 left-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded">Dashboard</button>
+  <div id="realTime" class="absolute top-4 right-4 text-sm font-mono opacity-70"></div>
+  <div class="text-center space-y-8">
+    <h1 class="text-3xl font-bold">Digital Timer</h1>
+    <div id="timerDisplay" class="text-8xl font-bold">00:00:00</div>
+    <div class="space-x-4">
+      <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl rounded">Set Time</button>
+      <button id="startBtn" class="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold text-xl rounded">Start</button>
     </div>
-
-    <!-- Quick Time Options -->
-    <div class="mt-4 flex flex-wrap justify-center gap-2">
-      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="5">
-        5 Min
-      </button>
-      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="15">
-        15 Min
-      </button>
-      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="30">
-        30 Min
-      </button>
-      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-hours="1">
-        1 Hour
-      </button>
-      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-hours="2">
-        2 Hours
-      </button>
+    <div class="mt-4 space-x-2">
+      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="5">5 Min</button>
+      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="15">15 Min</button>
+      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="30">30 Min</button>
+      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-hours="1">1 Hour</button>
     </div>
   </div>
-
-  <!-- Modal -->
-  <div id="timeModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center px-4">
-    <div class="bg-gray-800 text-white p-6 rounded shadow-lg space-y-4 w-full max-w-md">
-      <h2 class="text-lg md:text-xl font-bold text-center">Set Timer</h2>
-      <div class="flex justify-center space-x-2">
-        <input id="hoursInput" type="number" min="0" max="23" placeholder="HH" 
-               class="w-12 md:w-16 p-2 bg-gray-700 text-white text-center text-lg md:text-xl rounded">
-        <input id="minutesInput" type="number" min="0" max="59" placeholder="MM" 
-               class="w-12 md:w-16 p-2 bg-gray-700 text-white text-center text-lg md:text-xl rounded">
-        <input id="secondsInput" type="number" min="0" max="59" placeholder="SS" 
-               class="w-12 md:w-16 p-2 bg-gray-700 text-white text-center text-lg md:text-xl rounded">
+  <div id="timeModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+    <div class="bg-gray-800 text-white p-6 rounded shadow-lg space-y-4 w-80">
+      <h2 class="text-xl font-bold text-center">Set Timer</h2>
+      <div class="flex justify-center space-x-4">
+        <input id="hoursInput" type="number" min="0" max="23" placeholder="HH" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
+        <input id="minutesInput" type="number" min="0" max="59" placeholder="MM" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
+        <input id="secondsInput" type="number" min="0" max="59" placeholder="SS" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
       </div>
       <div class="flex justify-center space-x-4">
-        <button id="saveTimeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded">
-          Save
-        </button>
-        <button id="closeModalBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">
-          Cancel
-        </button>
+        <button id="saveTimeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded">Save</button>
+        <button id="closeModalBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Cancel</button>
       </div>
     </div>
   </div>
-
-  <!-- Audio Element -->
-  <audio id="alarmSound" src="bell-ring-01.wav" preload="auto">
-
+  <div id="dashboardModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+    <div class="bg-gray-900 text-white p-6 rounded shadow-lg w-full max-w-3xl space-y-6">
+      <h2 class="text-2xl font-bold text-center">Dashboard</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="p-4 bg-blue-600 text-center rounded-lg">
+          <h3 class="text-lg font-bold">Today Use</h3>
+          <p id="todayUsage" class="text-4xl font-bold">0 Min</p>
+        </div>
+        <div class="p-4 bg-green-600 text-center rounded-lg">
+          <h3 class="text-lg font-bold">Daily Average</h3>
+          <p id="dailyAverage" class="text-4xl font-bold">0 Min</p>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold mb-2">Monthly Usage</h3>
+        <canvas id="monthlyChart"></canvas>
+      </div>
+      <div class="text-center">
+        <button id="closeDashboardBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Close</button>
+      </div>
+    </div>
+  </div>
+  <audio id="alarmSound" src="bell-ring-01.wav" preload="auto"></audio>
   <script>
-    // Timer variables
-    let timerInterval;
-    let hours = 0, minutes = 0, seconds = 0;
-    let timerRunning = false; // To track if the timer is running
+    let timerInterval, hours = 0, minutes = 0, seconds = 0;
+    const todayUsageEl = document.getElementById("todayUsage");
+    const dailyAverageEl = document.getElementById("dailyAverage");
+    const monthlyChartEl = document.getElementById("monthlyChart");
+    let todayUsage = parseInt(localStorage.getItem("todayUsage")) || 0;
+    let dailyAverage = parseInt(localStorage.getItem("dailyAverage")) || 0;
+    let monthlyUsage = JSON.parse(localStorage.getItem("monthlyUsage")) || Array(12).fill(0);
 
-    // Elements
-    const timerDisplay = document.getElementById("timerDisplay");
-    const timeModal = document.getElementById("timeModal");
-    const realTime = document.getElementById("realTime");
-    const setTimeBtn = document.getElementById("setTimeBtn");
-    const startBtn = document.getElementById("startBtn");
-    const saveTimeBtn = document.getElementById("saveTimeBtn");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-    const hoursInput = document.getElementById("hoursInput");
-    const minutesInput = document.getElementById("minutesInput");
-    const secondsInput = document.getElementById("secondsInput");
-    const alarmSound = document.getElementById("alarmSound");
-    const quickTimeButtons = document.querySelectorAll(".quick-time-btn");
-
-    // Update Timer Display
     function updateTimerDisplay() {
-      timerDisplay.textContent = 
+      document.getElementById("timerDisplay").textContent =
         `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     }
 
-    // Start Timer
     function startTimer() {
-      timerRunning = true;
-      startBtn.textContent = "Stop"; // Change button text to "Stop"
-      startBtn.classList.remove("bg-green-600", "hover:bg-green-500");
-      startBtn.classList.add("bg-red-600", "hover:bg-red-500");
-
+      const startTime = new Date();
       if (timerInterval) clearInterval(timerInterval);
       timerInterval = setInterval(() => {
-        if (seconds > 0) {
-          seconds--;
-        } else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        } else {
+        if (seconds > 0) seconds--;
+        else if (minutes > 0) { minutes--; seconds = 59; }
+        else if (hours > 0) { hours--; minutes = 59; seconds = 59; }
+        else {
           clearInterval(timerInterval);
-          timerRunning = false;
-          startBtn.textContent = "Start"; // Reset button text to "Start"
-          startBtn.classList.remove("bg-red-600", "hover:bg-red-500");
-          startBtn.classList.add("bg-green-600", "hover:bg-green-500");
-          alarmSound.play(); // Play alarm sound
+          document.getElementById("alarmSound").play();
+          updateUsage(startTime);
         }
         updateTimerDisplay();
       }, 1000);
     }
 
-    // Stop Timer
-    function stopTimer() {
-      clearInterval(timerInterval);
-      timerRunning = false;
-      startBtn.textContent = "Start"; // Change button text to "Start"
-      startBtn.classList.remove("bg-red-600", "hover:bg-red-500");
-      startBtn.classList.add("bg-green-600", "hover:bg-green-500");
+    function updateUsage(startTime) {
+      const endTime = new Date();
+      const sessionMinutes = Math.floor((endTime - startTime) / 60000);
+      todayUsage += sessionMinutes; monthlyUsage[new Date().getMonth()] += sessionMinutes;
+      localStorage.setItem("todayUsage", todayUsage);
+      localStorage.setItem("monthlyUsage", JSON.stringify(monthlyUsage));
+      updateDashboard();
     }
 
-    // Toggle Timer
-    startBtn.addEventListener("click", () => {
-      if (timerRunning) {
-        stopTimer(); // If timer is running, stop it
-      } else {
-        startTimer(); // If timer is not running, start it
+    function updateDashboard() {
+      todayUsageEl.textContent = `${todayUsage} Min`;
+      dailyAverageEl.textContent = `${(todayUsage / Math.max(1, todayUsage / 24)).toFixed(2)} Min`;
+      if (monthlyChart) {
+        monthlyChart.data.datasets[0].data = monthlyUsage;
+        monthlyChart.update();
       }
-    });
-
-    // Quick Time Buttons
-    quickTimeButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const btnHours = parseInt(button.getAttribute("data-hours")) || 0;
-        const btnMinutes = parseInt(button.getAttribute("data-minutes")) || 0;
-        hours = btnHours;
-        minutes = btnMinutes;
-        seconds = 0;
-        updateTimerDisplay();
-        stopTimer(); // Stop any ongoing timer before starting a new one
-        startTimer(); // Automatically start the timer
-      });
-    });
-
-    // Open Modal
-    setTimeBtn.addEventListener("click", () => {
-      timeModal.classList.remove("hidden");
-    });
-
-    // Close Modal
-    closeModalBtn.addEventListener("click", () => {
-      timeModal.classList.add("hidden");
-    });
-
-    // Save Time
-    saveTimeBtn.addEventListener("click", () => {
-      hours = parseInt(hoursInput.value) || 0;
-      minutes = parseInt(minutesInput.value) || 0;
-      seconds = parseInt(secondsInput.value) || 0;
-      updateTimerDisplay();
-      timeModal.classList.add("hidden");
-      stopTimer(); // Stop any ongoing timer before starting a new one
-    });
-
-    // Real-Time Clock
-    function updateRealTime() {
-      const now = new Date();
-      realTime.textContent = now.toLocaleTimeString();
     }
-    setInterval(updateRealTime, 1000);
-    updateRealTime();
 
-    // Initial Timer Display
-    updateTimerDisplay();
+    const monthlyChart = new Chart(monthlyChartEl, {
+      type: 'bar',
+      data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], datasets: [{ label: "Monthly Usage", data: monthlyUsage, backgroundColor: 'rgba(75,192,192,0.2)', borderColor: 'rgba(75,192,192,1)', borderWidth: 1 }] },
+      options: { scales: { y: { beginAtZero: true } } }
+    });
+
+    document.getElementById("startBtn").addEventListener("click", startTimer);
+    document.getElementById("setTimeBtn").addEventListener("click", () => document.getElementById("timeModal").classList.remove("hidden"));
+    document.getElementById("saveTimeBtn").addEventListener("click", () => {
+      hours = parseInt(document.getElementById("hoursInput").value) || 0;
+      minutes = parseInt(document.getElementById("minutesInput").value) || 0;
+      seconds = parseInt(document.getElementById("secondsInput").value) || 0;
+      updateTimerDisplay(); document.getElementById("timeModal").classList.add("hidden");
+    });
+    document.getElementById("closeModalBtn").addEventListener("click", () => document.getElementById("timeModal").classList.add("hidden"));
+    document.getElementById("dashboardBtn").addEventListener("click", () => {
+      document.getElementById("dashboardModal").classList.remove("hidden");
+      updateDashboard();
+    });
+    document.getElementById("closeDashboardBtn").addEventListener("click", () => document.getElementById("dashboardModal").classList.add("hidden"));
+    setInterval(() => document.getElementById("realTime").textContent = new Date().toLocaleTimeString(), 1000);
   </script>
 </body>
 </html>
