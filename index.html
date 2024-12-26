@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Study Timer with Dashboard</title>
+  <title>Study Timer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>body {font-family: 'Courier New', Courier, monospace;}</style>
@@ -12,17 +12,18 @@
   <button id="dashboardBtn" class="absolute top-4 left-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded">Dashboard</button>
   <div id="realTime" class="absolute top-4 right-4 text-sm font-mono opacity-70"></div>
   <div class="text-center space-y-8">
-    <h1 class="text-3xl font-bold">Digital Timer</h1>
+    <h1 class="text-3xl font-bold">Study Timer</h1>
     <div id="timerDisplay" class="text-8xl font-bold">00:00:00</div>
     <div class="space-x-4">
       <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl rounded">Set Time</button>
       <button id="startBtn" class="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold text-xl rounded">Start</button>
     </div>
     <div class="mt-4 space-x-2">
-      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="5">5 Min</button>
+      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="5">2 Min</button>
       <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="15">15 Min</button>
       <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-minutes="30">30 Min</button>
       <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-hours="1">1 Hour</button>
+      <button class="quick-time-btn px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" data-hours="1">2 Hour</button>
     </div>
   </div>
   <div id="timeModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
@@ -44,7 +45,7 @@
       <h2 class="text-2xl font-bold text-center">Dashboard</h2>
       <div class="grid grid-cols-2 gap-4">
         <div class="p-4 bg-blue-600 text-center rounded-lg">
-          <h3 class="text-lg font-bold">Today Use</h3>
+          <h3 class="text-lg font-bold">Today Study</h3>
           <p id="todayUsage" class="text-4xl font-bold">0 Min</p>
         </div>
         <div class="p-4 bg-green-600 text-center rounded-lg">
@@ -53,7 +54,7 @@
         </div>
       </div>
       <div>
-        <h3 class="text-lg font-bold mb-2">Monthly Usage</h3>
+        <h3 class="text-lg font-bold mb-2">Monthly Study</h3>
         <canvas id="monthlyChart"></canvas>
       </div>
       <div class="text-center">
@@ -70,6 +71,17 @@
     let todayUsage = parseInt(localStorage.getItem("todayUsage")) || 0;
     let dailyAverage = parseInt(localStorage.getItem("dailyAverage")) || 0;
     let monthlyUsage = JSON.parse(localStorage.getItem("monthlyUsage")) || Array(12).fill(0);
+    
+    document.querySelectorAll(".quick-time-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const minutes = parseInt(btn.dataset.minutes) || 0;
+        const hours = parseInt(btn.dataset.hours) || 0;
+        document.getElementById("hoursInput").value = hours;
+        document.getElementById("minutesInput").value = minutes;
+        document.getElementById("secondsInput").value = 0;
+        document.getElementById("timeModal").classList.remove("hidden");
+      });
+    });
 
     function updateTimerDisplay() {
       document.getElementById("timerDisplay").textContent =
@@ -112,7 +124,7 @@
 
     const monthlyChart = new Chart(monthlyChartEl, {
       type: 'bar',
-      data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], datasets: [{ label: "Monthly Usage", data: monthlyUsage, backgroundColor: 'rgba(75,192,192,0.2)', borderColor: 'rgba(75,192,192,1)', borderWidth: 1 }] },
+      data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], datasets: [{ label: "Monthly Study", data: monthlyUsage, backgroundColor: 'rgba(75,192,192,0.2)', borderColor: 'rgba(75,192,192,1)', borderWidth: 1 }] },
       options: { scales: { y: { beginAtZero: true } } }
     });
 
