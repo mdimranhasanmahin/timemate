@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Study Timer is a simple yet effective tool to manage your study sessions efficiently. Stay focused and productive!">
-  <meta name="keywords" content="Study Timer, Timer App, Productivity Tool, Focus Timer, Pomodoro, Timer, Countdown Timer, Online Timer, Stopwatch, Time Management">
+  <meta name="keywords" content="Focus Timer, Online Timer, Stopwatch, Study Timer, Pomodoro Timer, Free Online Timer, Countdown Timer, Online Timer with Alarm Sound, Meditation Timer with Bells Online, Time management tool for students">
   <meta name="author" content="Md Imran Hasan Mahin">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="Focus Timer - Achieve More with Better Time Management">
@@ -19,54 +19,54 @@
   <style>body { font-family: 'Courier New', Courier, monospace; }</style>
 </head>
 
-<body class="bg-black text-white flex flex-col items-center justify-center h-screen relative">
-  <button id="dashboardBtn" class="absolute top-4 left-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" aria-label="Open Dashboard">Dashboard</button>
-  <div id="realTime" class="absolute top-4 right-4 text-sm font-mono opacity-70" aria-live="polite"></div>
-  <div class="text-center space-y-8">
-    <h1 class="text-3xl font-bold">Focus Timer</h1>
-    <div id="timerDisplay" class="text-8xl font-bold" aria-live="polite">00:00:00</div>
-    <div class="space-x-4">
-      <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl rounded" aria-label="Set Timer">Set Time</button>
-      <button id="startBtn" class="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold text-xl rounded" aria-label="Start Timer">Start</button>
+<body class="bg-black text-white flex flex-col items-center justify-center min-h-screen relative p-4">
+  <button id="dashboardBtn" class="absolute top-4 left-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded text-sm sm:text-base" aria-label="Open Dashboard">Dashboard</button>
+  <div id="realTime" class="absolute top-4 right-4 text-xs sm:text-sm font-mono opacity-70" aria-live="polite"></div>
+  <div class="text-center space-y-6 sm:space-y-8">
+    <h1 class="text-2xl sm:text-3xl font-bold">Focus Timer</h1>
+    <div id="timerDisplay" class="text-6xl sm:text-8xl font-bold" aria-live="polite">00:00:00</div>
+    <div class="space-x-2 sm:space-x-4">
+      <button id="setTimeBtn" class="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm sm:text-xl rounded" aria-label="Set Timer">Set Time</button>
+      <button id="startBtn" class="px-4 py-2 sm:px-6 sm:py-3 bg-green-600 hover:bg-green-500 text-white font-bold text-sm sm:text-xl rounded" aria-label="Start Timer">Start</button>
     </div>
   </div>
 
   <!-- Set Timer Modal -->
-  <div id="timeModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center" role="dialog" aria-modal="true">
-    <div class="bg-gray-800 text-white p-6 rounded shadow-lg space-y-4 w-80">
-      <h2 class="text-xl font-bold text-center">Set Timer</h2>
-      <div class="flex justify-center space-x-4">
-        <input id="hoursInput" type="number" min="0" max="23" placeholder="HH" class="w-16 p-2 bg-gray-700 text-white text-center rounded" aria-label="Hours">
-        <input id="minutesInput" type="number" min="0" max="59" placeholder="MM" class="w-16 p-2 bg-gray-700 text-white text-center rounded" aria-label="Minutes">
-        <input id="secondsInput" type="number" min="0" max="59" placeholder="SS" class="w-16 p-2 bg-gray-700 text-white text-center rounded" aria-label="Seconds">
+  <div id="timeModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+    <div class="bg-gray-800 text-white p-4 sm:p-6 rounded shadow-lg space-y-4 w-full max-w-xs sm:max-w-md">
+      <h2 class="text-lg sm:text-xl font-bold text-center">Set Timer</h2>
+      <div class="flex justify-center space-x-2 sm:space-x-4">
+        <input id="hoursInput" type="number" min="0" max="23" placeholder="HH" class="w-12 sm:w-16 p-2 bg-gray-700 text-white text-center rounded" aria-label="Hours">
+        <input id="minutesInput" type="number" min="0" max="59" placeholder="MM" class="w-12 sm:w-16 p-2 bg-gray-700 text-white text-center rounded" aria-label="Minutes">
+        <input id="secondsInput" type="number" min="0" max="59" placeholder="SS" class="w-12 sm:w-16 p-2 bg-gray-700 text-white text-center rounded" aria-label="Seconds">
       </div>
-      <div class="flex justify-center space-x-4">
-        <button id="saveTimeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded">Save</button>
-        <button id="closeModalBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Cancel</button>
+      <div class="flex justify-center space-x-2 sm:space-x-4">
+        <button id="saveTimeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm sm:text-base rounded">Save</button>
+        <button id="closeModalBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold text-sm sm:text-base rounded">Cancel</button>
       </div>
     </div>
   </div>
 
   <!-- Dashboard Modal -->
-  <div id="dashboardModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center" role="dialog" aria-modal="true">
-    <div class="bg-gray-900 text-white p-6 rounded shadow-lg w-full max-w-3xl space-y-6">
-      <h2 class="text-2xl font-bold text-center">Dashboard</h2>
-      <div class="grid grid-cols-2 gap-4">
+  <div id="dashboardModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+    <div class="bg-gray-900 text-white p-4 sm:p-6 rounded shadow-lg w-full max-w-xs sm:max-w-3xl space-y-4 sm:space-y-6">
+      <h2 class="text-xl sm:text-2xl font-bold text-center">Dashboard</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="p-4 bg-blue-600 text-center rounded-lg">
-          <h3 class="text-lg font-bold">Today Study</h3>
-          <p id="todayUsage" class="text-4xl font-bold">0 Hr 0 Min</p>
+          <h3 class="text-sm sm:text-lg font-bold">Today</h3>
+          <p id="todayUsage" class="text-2xl sm:text-4xl font-bold">0 Hr 0 Min</p>
         </div>
         <div class="p-4 bg-green-600 text-center rounded-lg">
-          <h3 class="text-lg font-bold">Daily Average</h3>
-          <p id="dailyAverage" class="text-4xl font-bold">0 Hr 0 Min</p>
+          <h3 class="text-sm sm:text-lg font-bold">Daily Average</h3>
+          <p id="dailyAverage" class="text-2xl sm:text-4xl font-bold">0 Hr 0 Min</p>
         </div>
       </div>
       <div>
-        <h3 class="text-lg font-bold mb-2">Monthly Study</h3>
+        <h3 class="text-sm sm:text-lg font-bold mb-2">Monthly</h3>
         <canvas id="monthlyChart"></canvas>
       </div>
       <div class="text-center">
-        <button id="closeDashboardBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded">Close</button>
+        <button id="closeDashboardBtn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold text-sm sm:text-base rounded">Close</button>
       </div>
     </div>
   </div>
