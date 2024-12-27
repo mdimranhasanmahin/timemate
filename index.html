@@ -20,25 +20,25 @@
 </head>
 
 <body class="bg-black text-white flex flex-col items-center justify-center h-screen relative">
-  <button id="dashboardBtn" class="absolute top-4 left-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded">Dashboard</button>
-  <div id="realTime" class="absolute top-4 right-4 text-sm font-mono opacity-70"></div>
+  <button id="dashboardBtn" class="absolute top-4 left-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded" aria-label="Open Dashboard">Dashboard</button>
+  <div id="realTime" class="absolute top-4 right-4 text-sm font-mono opacity-70" aria-live="polite"></div>
   <div class="text-center space-y-8">
     <h1 class="text-3xl font-bold">Focus Timer</h1>
-    <div id="timerDisplay" class="text-8xl font-bold">00:00:00</div>
+    <div id="timerDisplay" class="text-8xl font-bold" aria-live="polite">00:00:00</div>
     <div class="space-x-4">
-      <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl rounded">Set Time</button>
-      <button id="startBtn" class="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold text-xl rounded">Start</button>
+      <button id="setTimeBtn" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl rounded" aria-label="Set Timer">Set Time</button>
+      <button id="startBtn" class="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold text-xl rounded" aria-label="Start Timer">Start</button>
     </div>
   </div>
 
   <!-- Set Timer Modal -->
-  <div id="timeModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+  <div id="timeModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center" role="dialog" aria-modal="true">
     <div class="bg-gray-800 text-white p-6 rounded shadow-lg space-y-4 w-80">
       <h2 class="text-xl font-bold text-center">Set Timer</h2>
       <div class="flex justify-center space-x-4">
-        <input id="hoursInput" type="number" min="0" max="23" placeholder="HH" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
-        <input id="minutesInput" type="number" min="0" max="59" placeholder="MM" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
-        <input id="secondsInput" type="number" min="0" max="59" placeholder="SS" class="w-16 p-2 bg-gray-700 text-white text-center rounded">
+        <input id="hoursInput" type="number" min="0" max="23" placeholder="HH" class="w-16 p-2 bg-gray-700 text-white text-center rounded" aria-label="Hours">
+        <input id="minutesInput" type="number" min="0" max="59" placeholder="MM" class="w-16 p-2 bg-gray-700 text-white text-center rounded" aria-label="Minutes">
+        <input id="secondsInput" type="number" min="0" max="59" placeholder="SS" class="w-16 p-2 bg-gray-700 text-white text-center rounded" aria-label="Seconds">
       </div>
       <div class="flex justify-center space-x-4">
         <button id="saveTimeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded">Save</button>
@@ -48,7 +48,7 @@
   </div>
 
   <!-- Dashboard Modal -->
-  <div id="dashboardModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+  <div id="dashboardModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center" role="dialog" aria-modal="true">
     <div class="bg-gray-900 text-white p-6 rounded shadow-lg w-full max-w-3xl space-y-6">
       <h2 class="text-2xl font-bold text-center">Dashboard</h2>
       <div class="grid grid-cols-2 gap-4">
@@ -75,24 +75,21 @@
 
   <script>
     let timerInterval, hours = 0, minutes = 0, seconds = 0;
-    let isRunning = false; // To check if timer is running
+    let isRunning = false;
     const todayUsageEl = document.getElementById("todayUsage");
     const dailyAverageEl = document.getElementById("dailyAverage");
     const monthlyChartEl = document.getElementById("monthlyChart");
     let todayUsage = parseInt(localStorage.getItem("todayUsage")) || 0;
-    let dailyAverage = parseInt(localStorage.getItem("dailyAverage")) || 0;
     let monthlyUsage = JSON.parse(localStorage.getItem("monthlyUsage")) || Array(12).fill(0);
 
-    // Update the real-time clock in the top-right corner
     function updateRealTime() {
       const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById("realTime").textContent = `${hours}:${minutes}:${seconds}`;
+      const timeString = now.toLocaleTimeString();
+      document.getElementById("realTime").textContent = timeString;
+      requestAnimationFrame(updateRealTime);
     }
 
-    setInterval(updateRealTime, 1000); // Update the real-time clock every second
+    updateRealTime();
 
     function updateTimerDisplay() {
       document.getElementById("timerDisplay").textContent =
@@ -103,7 +100,7 @@
       const startTime = new Date();
       if (timerInterval) clearInterval(timerInterval);
       document.getElementById("startBtn").textContent = "Stop";
-      isRunning = true; // Timer is now running
+      isRunning = true;
       timerInterval = setInterval(() => {
         if (seconds > 0) seconds--;
         else if (minutes > 0) { minutes--; seconds = 59; }
@@ -120,28 +117,24 @@
     function stopTimer() {
       clearInterval(timerInterval);
       document.getElementById("startBtn").textContent = "Start";
-      isRunning = false; // Timer is paused
+      isRunning = false;
     }
 
     function updateUsage(startTime) {
       const endTime = new Date();
       const sessionMinutes = Math.floor((endTime - startTime) / 60000);
-      const sessionHours = Math.floor(sessionMinutes / 60);
-      const remainingMinutes = sessionMinutes % 60;
       todayUsage += sessionMinutes;
       monthlyUsage[new Date().getMonth()] += sessionMinutes;
       localStorage.setItem("todayUsage", todayUsage);
       localStorage.setItem("monthlyUsage", JSON.stringify(monthlyUsage));
-      updateDashboard(sessionHours, remainingMinutes);
+      updateDashboard();
     }
 
-    function updateDashboard(sessionHours, sessionMinutes) {
+    function updateDashboard() {
       todayUsageEl.textContent = `${Math.floor(todayUsage / 60)} Hr ${todayUsage % 60} Min`;
       dailyAverageEl.textContent = `${Math.floor(todayUsage / 60)} Hr ${todayUsage % 60} Min`;
-      if (monthlyChart) {
-        monthlyChart.data.datasets[0].data = monthlyUsage;
-        monthlyChart.update();
-      }
+      monthlyChart.data.datasets[0].data = monthlyUsage;
+      monthlyChart.update();
     }
 
     const monthlyChart = new Chart(monthlyChartEl, {
@@ -150,7 +143,6 @@
       options: { responsive: true, scales: { y: { beginAtZero: true }}}
     });
 
-    // Handle Set Time Modal
     document.getElementById("setTimeBtn").addEventListener("click", () => {
       document.getElementById("timeModal").classList.remove("hidden");
     });
@@ -181,6 +173,7 @@
 
     document.getElementById("dashboardBtn").addEventListener("click", () => {
       document.getElementById("dashboardModal").classList.remove("hidden");
+      updateDashboard();
     });
 
     document.getElementById("closeDashboardBtn").addEventListener("click", () => {
