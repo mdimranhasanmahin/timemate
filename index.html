@@ -3,28 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Study Timer is a simple yet effective tool to manage your study sessions efficiently. Stay focused and productive!">
-  <meta name="keywords" content="Focus Timer, Online Timer, Stopwatch, Study Timer, Pomodoro Timer, Free Online Timer, Countdown Timer, Online Timer with Alarm Sound, Meditation Timer with Bells Online, Time management tool for students">
+  <meta name="description" content="Focus Timer helps you stay productive by managing your study and work sessions. Utilize Pomodoro, countdown timers, and more. Stay focused, achieve your goals!">
+  <meta name="keywords" content="Focus Timer, Study Timer, Time Management, Pomodoro Technique, Productivity Tools, Online Timer, Task Timer, Time Tracker">
   <meta name="author" content="Md Imran Hasan Mahin">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="Focus Timer - Achieve More with Better Time Management">
-  <meta property="og:description" content="Manage your study sessions effectively with Study Timer. Stay productive!">
+  <meta property="og:description" content="Boost your productivity with Focus Timer. Use Pomodoro timers, countdowns, and manage your study sessions effectively.">
   <meta property="og:image" content="https://mdimranhasanmahin.github.io/focus-timer/hii.png">
   <meta property="og:url" content="https://mdimranhasanmahin.github.io/focus-timer">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="hii.png" type="image/x-icon">
-  <title>Focus Timer - Online Timer for Work, Study & Tasks</title>
+  <title>Focus Timer - Boost Productivity with Timely Sessions</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>body { font-family: 'Courier New', Courier, monospace; }</style>
 </head>
-
+  
 <body class="bg-black text-white flex flex-col items-center justify-center min-h-screen relative p-4">
   <button id="dashboardBtn" class="absolute top-4 left-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded text-sm sm:text-base" aria-label="Open Dashboard">Dashboard</button>
   <div id="realTime" class="absolute top-4 right-4 text-xs sm:text-sm font-mono opacity-70" aria-live="polite"></div>
-  <div class="text-center space-y-6 sm:space-y-8">
+  <div class="text-center space-y-6 sm:space-y-8 mt-40 sm:mt-50">
     <h1 class="text-2xl sm:text-3xl font-bold">Focus Timer</h1>
-    <div id="timerDisplay" class="text-6xl sm:text-8xl font-bold" aria-live="polite">00:00:00</div>
+    <!-- Adjusted timer size for better mobile display -->
+    <div id="timerDisplay" class="text-6xl sm:text-7xl md:text-8xl font-bold" aria-live="polite">00:00:00</div>
     <div class="space-x-2 sm:space-x-4">
       <button id="setTimeBtn" class="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm sm:text-xl rounded" aria-label="Set Timer">Set Time</button>
       <button id="startBtn" class="px-4 py-2 sm:px-6 sm:py-3 bg-green-600 hover:bg-green-500 text-white font-bold text-sm sm:text-xl rounded" aria-label="Start Timer">Start</button>
@@ -72,6 +73,44 @@
   </div>
 
   <audio id="alarmSound" src="bell-ring-01.wav" preload="auto"></audio>
+
+
+   
+  <div class="mt-60 bg-gray-800 text-white rounded-lg shadow-lg p-6 sm:p-8">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6">Why People Use Timers for Study and Work?</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <img src="contant 11.jpg" alt="Timer Productivity" class="rounded-lg shadow-lg">
+      <div class="space-y-4">
+        <p class="text-base sm:text-lg">Using a timer for study and work has become a popular productivity strategy because it helps:</p>
+        <ul class="list-disc list-inside space-y-2">
+          <li><strong>Enhance Focus:</strong> Timers create a sense of urgency, encouraging you to stay on task.</li>
+          <li><strong>Prevent Burnout:</strong> By incorporating regular breaks, you maintain energy and avoid overworking.</li>
+          <li><strong>Boost Time Awareness:</strong> Tracking time helps you understand how long tasks take, leading to better planning.</li>
+          <li><strong>Increase Accountability:</strong> Knowing the timer is running keeps you committed to the task at hand.</li>
+          <li><strong>Support Proven Methods:</strong> Techniques like the Pomodoro method rely on timed focus sessions to maximize productivity.</li>
+        </ul>
+        <p class="text-base sm:text-lg">Timers are simple yet powerful tools to help you stay disciplined, organized, and productive in any study or work environment. Try <a href="mdimranhasanmahin.github.io/focus-timer/"> Focus Timer</a> today and see the difference!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12 bg-gray-800 text-white rounded-lg shadow-lg p-6 sm:p-8">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6">Why Choose Focus Timer?</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <p class="text-base sm:text-lg">Focus Timer offers an exceptional productivity experience by combining powerful features with simplicity:</p>
+        <ul class="list-disc list-inside space-y-2">
+          <li><strong>Simple and Intuitive Design:</strong> Easily set focus and break intervals using a user-friendly interface.</li>
+          <li><strong>Distraction-Free Experience:</strong> A minimalistic design that keeps you focused on what matters most.</li>
+          <li><strong>Built-in Alarm System:</strong>Get notified instantly when your timer ends to stay on track effortlessly.</li>
+          <li><strong>Usage Dashboard:</strong> View daily and monthly usage statistics to monitor your progress.</li>
+        </ul>
+      </div>
+      <img src="contant 2.jpeg" alt="Focus Timer interface showing a countdown timer " class="rounded-lg shadow-lg">
+    </div>
+  </div>
+ 
+  
 
   <script>
     let timerInterval, hours = 0, minutes = 0, seconds = 0;
